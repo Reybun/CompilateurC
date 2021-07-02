@@ -105,8 +105,7 @@ ast_t *ast_new_function (char *name, int return_type, ast_list_t *params, ast_li
 ast_t *ast_new_fncall (char *name, ast_list_t *args);
 ast_t *ast_new_comp_stmt (ast_list_t *stmts);
 
-/*
-TO DO
+
 ast_t *ast_new_assignment (ast_t *lvalue, ast_t *rvalue);
 ast_t *ast_new_declaration (ast_t *lvalue, ast_t *rvalue);
 ast_t *ast_new_condition (ast_t *condition, ast_t *valid, ast_t *invalid);
@@ -115,6 +114,5 @@ ast_t *ast_new_return (ast_t *expr);
 ast_list_t *ast_list_new_node (ast_t *elem);
 ast_list_t *ast_list_add (ast_list_t **list, ast_t *elem);
 
-*/
 #define AST_H
 #endif /* AST_H */
