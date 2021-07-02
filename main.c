@@ -13,7 +13,6 @@ int main()
 {
     buffer_t *buffer = malloc(sizeof(buffer_t));
     FILE *fp = fopen("test.txt", "r");
-    symbols *symboles = malloc(sizeof(symbols));
 
     buf_init(buffer, fp);
 
@@ -33,9 +32,10 @@ int main()
     */
 
    //parser(buffer, symboles);
-   ast_list_t *list = malloc(sizeof(ast_list_t));
-   list->data = ast_new_integer(23l);
-   printf("\n GOT %d \n", list->data->type);
+    symbol_t *symb = creer_symbole("name", SYM_VAR, ast_new_integer(1l));
+    int result = is_symbol_present(symb, "name");
+
+    printf("\n result is %d \n", result);
 
 
 

@@ -5,7 +5,7 @@
 #include "parser.h"
 
 
-void parser(buffer_t * buffer, symbols *symboles) {
+void parser(buffer_t * buffer) {
     while (buf_eof(buffer) == false)
     {
         char *first = lexer_getalphanum(buffer);
@@ -14,12 +14,12 @@ void parser(buffer_t * buffer, symbols *symboles) {
             exit(EXIT_FAILURE);
         }
         else {
-            analyse_fonction(buffer, symboles);
+            analyse_fonction(buffer);
         }      
     }
 }
 
-void analyse_fonction(buffer_t * buffer, symbols *symboles) {
+void analyse_fonction(buffer_t * buffer) {
     /*
     Algorithme analyse_fonction():
 
@@ -35,12 +35,12 @@ void analyse_fonction(buffer_t * buffer, symbols *symboles) {
     */
 
     char *name = lexer_getalphanum(buffer);
-    analyse_parametre(buffer, symboles);
+    analyse_parametre(buffer);
     analyse_type_de_retour(buffer);
     analyse_corps_de_fonction(buffer);
 }
 
-void analyse_parametre(buffer_t * buffer, symbols *symboles) {
+void analyse_parametre(buffer_t * buffer) {
 
     lexer_assert_openbrace(buffer, "Expected (");
     int should_continue = 1;
@@ -57,6 +57,7 @@ void analyse_parametre(buffer_t * buffer, symbols *symboles) {
         vérification de l’inexistance du lexème dans la table des symboles
         si le symbole n’existe pas, l’ajouter dans la table des symboles
         */
+        
         int count = is_symbol_present(symboles, name);
         if(count == 0) {
             empiler(symboles, name);
@@ -96,39 +97,41 @@ void analyse_parametre(buffer_t * buffer, symbols *symboles) {
 void analyse_corps_de_fonction(buffer_t * buffer) {}
 void analyse_type_de_retour(buffer_t * buffer) {}
 
-int is_symbol_present(symbols *symboles, char* name) {
+symbol_t *creer_symbole(char* name, sym_type_t type, ast_t *attributes) {
+    symbol_t *symbole = (symbol_t *)malloc(sizeof(symbol_t));
+    symbole->name = name;
+    symbole->type = type;
+    symbole->attributes = attributes;
+    symbole->next = NULL;
+    symbole->function_table = NULL;
+    return symbole;
+}
 
-    symbol* temp = symboles->datas;
+void empiler(symbol_t **pile, symbol_t *symbole){
+    symbol_t *temp;
+
+    temp = *pile;
+    if (temp != NULL)
+    {
+        if (temp->name != NULL)
+        {
+            symbole->next = temp;
+        }
+        pile = &symbole;
+    }
+}
+
+int is_symbol_present(symbol_t *pile, char *name) {
+
+    symbol_t *temp = pile;
     int found = 0;
 
     while (temp != NULL)
     {
-        printf("%s ", temp->name);
         if(temp->name == name){
             found++;
         }
         temp = temp->next;
     }
     return found;
-}
-
-void empiler(symbols *pile, char *name)
-{
-	if (pile != NULL)
-	{
-		symbol *op = creerSymbol(name);
-		if (pile->datas != NULL)
-		{
-			op->next = pile->datas;
-		}
-		pile->datas = op;
-	}
-}
-
-symbol *creerSymbol(char* name)
-{
-	symbol *op = (symbol *)malloc(sizeof(symbol));
-	op->name = name;
-	op->next = NULL;
-	return op;
 }
