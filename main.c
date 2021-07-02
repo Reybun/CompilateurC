@@ -12,7 +12,7 @@ int main()
 {
     buffer_t *buffer = malloc(sizeof(buffer_t));
     FILE *fp = fopen("test.txt", "r");
-    symbols *symboles = malloc(sizeof(symbols));
+    symbol_t *symboles = malloc(sizeof(symbol_t));
 
     buf_init(buffer, fp);
 

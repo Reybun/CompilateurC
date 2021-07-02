@@ -4,22 +4,25 @@
 #include "lexer.h"
 #include "parser.h"
 
-
-void parser(buffer_t * buffer, symbols *symboles) {
+void parser(buffer_t *buffer, symbol_t *symboles)
+{
     while (buf_eof(buffer) == false)
     {
         char *first = lexer_getalphanum(buffer);
-        if(strcmp(first, "fonction") != 0) {
-            printf("----------------- Expected function but was %s \n", first); 
+        if (strcmp(first, "fonction") != 0)
+        {
+            printf("----------------- Expected function but was %s \n", first);
             exit(EXIT_FAILURE);
         }
-        else {
+        else
+        {
             analyse_fonction(buffer, symboles);
-        }      
+        }
     }
 }
 
-void analyse_fonction(buffer_t * buffer, symbols *symboles) {
+void analyse_fonction(buffer_t *buffer, symbol_t *symboles)
+{
     /*
     Algorithme analyse_fonction():
 
@@ -40,28 +43,33 @@ void analyse_fonction(buffer_t * buffer, symbols *symboles) {
     analyse_corps_de_fonction(buffer);
 }
 
-void analyse_parametre(buffer_t * buffer, symbols *symboles) {
+void analyse_parametre(buffer_t *buffer, symbol_t *symboles)
+{
 
     lexer_assert_openbrace(buffer, "Expected (");
     int should_continue = 1;
     while (should_continue == 1)
     {
         char *type = lexer_getalphanum(buffer);
-        if(strcmp(type, "entier") != 0) {
-            printf("Expected a type but was %s \n", type); 
+        if (strcmp(type, "entier") != 0)
+        {
+            printf("Expected a type but was %s \n", type);
             exit(EXIT_FAILURE);
         }
-        
+
         char *name = lexer_getalphanum(buffer);
         /*
         vérification de l’inexistance du lexème dans la table des symboles
         si le symbole n’existe pas, l’ajouter dans la table des symboles
         */
         int count = is_symbol_present(symboles, name);
-        if(count == 0) {
+        if (count == 0)
+        {
             empiler(symboles, name);
-        } else {
-            printf("There is already a variable with the name %s \n", type); 
+        }
+        else
+        {
+            printf("There is already a variable with the name %s \n", type);
             exit(EXIT_FAILURE);
         }
         /*
@@ -76,35 +84,39 @@ void analyse_parametre(buffer_t * buffer, symbols *symboles) {
         */
 
         char next = buf_getchar_after_blank(buffer);
-        if(next == ',') {
-           //continue
-        } 
+        if (next == ',')
+        {
+            //continue
+        }
         else if (next == ')')
         {
-           //stop the while 
-           should_continue = 0;
-        } else
+            //stop the while
+            //stop the while
+            should_continue = 0;
+        }
+        else
         {
-            printf("Expected , or ) but got %c \n", next); 
+            printf("Expected , or ) but got %c \n", next);
             exit(EXIT_FAILURE);
         }
     }
     //return params but we have it in symbols
-    
 }
 
-void analyse_corps_de_fonction(buffer_t * buffer) {}
-void analyse_type_de_retour(buffer_t * buffer) {}
+void analyse_corps_de_fonction(buffer_t *buffer) {}
+void analyse_type_de_retour(buffer_t *buffer) {}
 
-int is_symbol_present(symbols *symboles, char* name) {
+int is_symbol_present(symbols *symboles, char *name)
+{
 
-    symbol* temp = symboles->datas;
+    symbol *temp = symboles->datas;
     int found = 0;
 
     while (temp != NULL)
     {
         printf("%s ", temp->name);
-        if(temp->name == name){
+        if (temp->name == name)
+        {
             found++;
         }
         temp = temp->next;
@@ -114,21 +126,21 @@ int is_symbol_present(symbols *symboles, char* name) {
 
 void empiler(symbols *pile, char *name)
 {
-	if (pile != NULL)
-	{
-		symbol *op = creerSymbol(name);
-		if (pile->datas != NULL)
-		{
-			op->next = pile->datas;
-		}
-		pile->datas = op;
-	}
+    if (pile != NULL)
+    {
+        symbol *op = creerSymbol(name);
+        if (pile->datas != NULL)
+        {
+            op->next = pile->datas;
+        }
+        pile->datas = op;
+    }
 }
 
-symbol *creerSymbol(char* name)
+symbol *creerSymbol(char *name)
 {
-	symbol *op = (symbol *)malloc(sizeof(symbol));
-	op->name = name;
-	op->next = NULL;
-	return op;
+    symbol *op = (symbol *)malloc(sizeof(symbol));
+    op->name = name;
+    op->next = NULL;
+    return op;
 }
