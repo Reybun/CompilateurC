@@ -16,6 +16,13 @@ typedef enum {
     AST_RETURN
 } ast_node_type_e;
 
+typedef enum {
+    ENTIER,
+    CHAR
+} var_type;
+
+
+
 //<=, ==, ET, OU, +, -, *
 typedef enum {
     ADD,
@@ -25,6 +32,9 @@ typedef enum {
     EQUAL,
     INF_EQUAL,
     SUP_EQUAL,
+    SUP,
+    INF,
+    DIFF,
     AND, 
     OR
 } ast_binary_e;
@@ -35,7 +45,7 @@ typedef struct ast_t {
         long integer;
         struct {
             char *name;
-            int type;
+            var_type type;
         } var;
         struct {
             ast_binary_e op;
@@ -82,15 +92,21 @@ typedef struct ast_t {
     };
 } ast_t;
 
-/*
-TO DO
+typedef struct ast_list_t {
+    ast_t *data;
+    struct ast_list_t *next;
+} ast_list_t;
+
 
 ast_t *ast_new_integer (long val);
-ast_t *ast_new_variable (char *name, int type);
+ast_t *ast_new_variable (char *name, var_type type);
 ast_t *ast_new_binary (ast_binary_e op, ast_t *left, ast_t *right);
 ast_t *ast_new_function (char *name, int return_type, ast_list_t *params, ast_list_t *stmts);
 ast_t *ast_new_fncall (char *name, ast_list_t *args);
 ast_t *ast_new_comp_stmt (ast_list_t *stmts);
+
+/*
+TO DO
 ast_t *ast_new_assignment (ast_t *lvalue, ast_t *rvalue);
 ast_t *ast_new_declaration (ast_t *lvalue, ast_t *rvalue);
 ast_t *ast_new_condition (ast_t *condition, ast_t *valid, ast_t *invalid);
