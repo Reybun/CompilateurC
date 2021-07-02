@@ -51,7 +51,7 @@ ast_t *ast_new_comp_stmt (ast_list_t *stmts){
     result->compound_stmt.stmts = stmts;
     return result;
 }
-/*
+
 ast_t *ast_new_assignment (ast_t *lvalue, ast_t *rvalue){
     
 }
@@ -67,12 +67,24 @@ ast_t *ast_new_loop (ast_t *condition, ast_t *stmt){
 ast_t *ast_new_return (ast_t *expr){
     
 }
-ast_list_t *ast_list_new_node (ast_t *elem){
-    
+ast_list_t *ast_list_new_node (ast_t *elem) {
+    ast_list_t *new_node;
+
+    new_node = (ast_list_t *)malloc(sizeof(ast_list_t));
+    new_node->data = elem;
+    new_node->next = NULL;
+
+    return new_node;
 }
+
 ast_list_t *ast_list_add (ast_list_t **list, ast_t *elem){
+    ast_list_t *tmp;
+
+    tmp = *list;
+    while (tmp->next) {
+        tmp = tmp->next;
+    }
+    tmp->next = ast_list_new_node(elem);
     
+    return *list;
 }
-
-
-*/
