@@ -13,6 +13,10 @@ int main()
 {
     buffer_t *buffer = malloc(sizeof(buffer_t));
     FILE *fp = fopen("test.txt", "r");
+<<<<<<< HEAD
+=======
+    symbol_t *symboles = malloc(sizeof(symbol_t));
+>>>>>>> a459b3217c5716481c9915d5c0fc751a86365492
 
     buf_init(buffer, fp);
 

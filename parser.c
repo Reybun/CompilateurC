@@ -9,8 +9,9 @@ void parser(buffer_t * buffer) {
     while (buf_eof(buffer) == false)
     {
         char *first = lexer_getalphanum(buffer);
-        if(strcmp(first, "fonction") != 0) {
-            printf("----------------- Expected function but was %s \n", first); 
+        if (strcmp(first, "fonction") != 0)
+        {
+            printf("----------------- Expected function but was %s \n", first);
             exit(EXIT_FAILURE);
         }
         else {
@@ -47,11 +48,12 @@ void analyse_parametre(buffer_t * buffer) {
     while (should_continue == 1)
     {
         char *type = lexer_getalphanum(buffer);
-        if(strcmp(type, "entier") != 0) {
-            printf("Expected a type but was %s \n", type); 
+        if (strcmp(type, "entier") != 0)
+        {
+            printf("Expected a type but was %s \n", type);
             exit(EXIT_FAILURE);
         }
-        
+
         char *name = lexer_getalphanum(buffer);
         /*
         vérification de l’inexistance du lexème dans la table des symboles
@@ -59,10 +61,13 @@ void analyse_parametre(buffer_t * buffer) {
         */
         
         int count = is_symbol_present(symboles, name);
-        if(count == 0) {
+        if (count == 0)
+        {
             empiler(symboles, name);
-        } else {
-            printf("There is already a variable with the name %s \n", type); 
+        }
+        else
+        {
+            printf("There is already a variable with the name %s \n", type);
             exit(EXIT_FAILURE);
         }
         /*
@@ -77,25 +82,27 @@ void analyse_parametre(buffer_t * buffer) {
         */
 
         char next = buf_getchar_after_blank(buffer);
-        if(next == ',') {
-           //continue
-        } 
+        if (next == ',')
+        {
+            //continue
+        }
         else if (next == ')')
         {
-           //stop the while 
-           should_continue = 0;
-        } else
+            //stop the while
+            //stop the while
+            should_continue = 0;
+        }
+        else
         {
-            printf("Expected , or ) but got %c \n", next); 
+            printf("Expected , or ) but got %c \n", next);
             exit(EXIT_FAILURE);
         }
     }
     //return params but we have it in symbols
-    
 }
 
-void analyse_corps_de_fonction(buffer_t * buffer) {}
-void analyse_type_de_retour(buffer_t * buffer) {}
+void analyse_corps_de_fonction(buffer_t *buffer) {}
+void analyse_type_de_retour(buffer_t *buffer) {}
 
 symbol_t *creer_symbole(char* name, sym_type_t type, ast_t *attributes) {
     symbol_t *symbole = (symbol_t *)malloc(sizeof(symbol_t));
