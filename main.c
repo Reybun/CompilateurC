@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include "lexer.h"
 #include "parser.h"
+#include "ast.h"
 
 
 //gcc -Wall -o app *.c
@@ -31,7 +32,12 @@ int main()
     lexer_assert_twopoints(buffer, "expected :");
     */
 
-   parser(buffer, symboles);
+   //parser(buffer, symboles);
+   ast_list_t *list = malloc(sizeof(ast_list_t));
+   list->data = ast_new_integer(23l);
+   printf("\n GOT %d \n", list->data->type);
+
+
 
 
    //afficher ast

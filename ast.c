@@ -27,7 +27,6 @@ ast_t *ast_new_binary (ast_binary_e op, ast_t *left, ast_t *right){
     return result;
 }
 
-
 ast_t *ast_new_function (char *name, int return_type, ast_list_t *params, ast_list_t *stmts){
     ast_t *result = (ast_t *)malloc(sizeof(ast_t));
     result->type = AST_FUNCTION;
